@@ -1,0 +1,25 @@
+{
+  "name": "pesas-lbd-reportes",
+  "version": "1.0.0",
+  "description": "Generar reportes para aplicacion de pesas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uvilor/pesas-lbd-reportes.git"
+  },
+  "keywords": [
+    "reportes",
+    "pesa",
+    "pdf",
+    "csv"
+  ],
+  "author": "Erinell Barba",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uvilor/pesas-lbd-reportes/issues"
+  },
+  "homepage": "https://github.com/uvilor/pesas-lbd-reportes#readme"
+}

@@ -1,0 +1,77 @@
+name: Deploy with SAM
+
+on:
+  push:
+    branches:
+      - master
+      - qa
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set Stage Variable
+        id: set-stage
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "master" ]]; then
+            echo "stage=prod" >> $GITHUB_ENV
+            echo "log=INFO" >> $GITHUB_ENV
+            echo "jwtSecret=${{ secrets.PROD_JWT_SECRET }}" >> $GITHUB_ENV
+            echo "dbName=${{ secrets.PROD_DB_NAME }}" >> $GITHUB_ENV
+            echo "SecretDbName=${{ secrets.PROD_DB_SECRET_NAME }}" >> $GITHUB_ENV
+          else
+            echo "stage=labs" >> $GITHUB_ENV
+            echo "log=DEBUG" >> $GITHUB_ENV
+            echo "jwtSecret=${{ secrets.LABS_JWT_SECRET }}" >> $GITHUB_ENV
+            echo "dbName=${{ secrets.LABS_DB_NAME }}" >> $GITHUB_ENV
+            echo "SecretDbName=${{ secrets.LABS_DB_SECRET_NAME }}" >> $GITHUB_ENV
+          fi
+
+      - name: Create .npmrc
+        run: |
+          echo "@uvilor:registry=https://npm.pkg.github.com/" > ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> ~/.npmrc
+
+      - name: Package install
+        run: npm install
+
+      - name: Remove .npmrc
+        run: rm ~/.npmrc
+
+      - name: Build
+        run: npm run build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      
+      - name: Get AWS values
+        run: |
+          echo "Stage: $stage"
+          REST_API_PESA_ID=$(aws cloudformation list-exports --query "Exports[?Name=='${stage}RestApiPesaId'].Value" --output text)
+          echo "RestApiPesaId=$REST_API_PESA_ID" >> $GITHUB_ENV
+
+      - name: Disable SAM CLI telemetry
+        run: echo "SAM_CLI_TELEMETRY=0" >> $GITHUB_ENV
+
+      - name: Deploy SAM application
+        run: |
+          sam deploy \
+            --stack-name "pesas-lbd-reportes-${{ env.stage }}" \
+            --s3-bucket "uvilor-artifacts-store" \
+            --s3-prefix "sam/lambda/pesas-lbd-reportes-${{ env.stage }}" \
+            --region "us-east-1" \
+            --capabilities "CAPABILITY_IAM" \
+            --parameter-overrides \
+              DbName="${{ env.dbName }}" \
+              Stage=${{ env.stage }} \
+              Log="${{ env.log }}" \
+              SecretDbName=${{ env.SecretDbName }} \
+              RestApiPesaId="${{ env.RestApiPesaId }}"
