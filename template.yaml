@@ -8,9 +8,6 @@ Parameters:
   Stage:
     Type: String
     Default: labs
-  DbLog:
-    Type: String
-    Default: "true"
   Log:
     Type: String
     Default: DEBUG

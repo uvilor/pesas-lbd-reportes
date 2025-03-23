@@ -70,8 +70,6 @@ jobs:
             --region "us-east-1" \
             --capabilities "CAPABILITY_IAM" \
             --parameter-overrides \
-              DbName="${{ env.dbName }}" \
               Stage=${{ env.stage }} \
               Log="${{ env.log }}" \
-              SecretDbName=${{ env.SecretDbName }} \
               RestApiPesaId="${{ env.RestApiPesaId }}"
