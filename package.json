@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Generar reportes para aplicacion de pesas",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run clean && ./node_modules/typescript/bin/tsc",
+    "clean": "rm -rf dist"
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,18 @@
   "bugs": {
     "url": "https://github.com/uvilor/pesas-lbd-reportes/issues"
   },
-  "homepage": "https://github.com/uvilor/pesas-lbd-reportes#readme"
+  "homepage": "https://github.com/uvilor/pesas-lbd-reportes#readme",
+  "dependencies": {
+    "@uvilor/uvilor-utils": "^1.2.1",
+    "pdfkit": "^0.16.0",
+    "pdfkit-table": "^0.1.99"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-lambda": "^3.772.0",
+    "@aws-sdk/client-s3": "^3.772.0",
+    "@aws-sdk/lib-storage": "^3.772.0",
+    "@aws-sdk/s3-request-presigner": "^3.772.0",
+    "@types/pdfkit": "^0.13.9",
+    "typescript": "^5.8.2"
+  }
 }

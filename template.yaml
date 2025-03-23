@@ -1,0 +1,120 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    LoggingConfig:
+      LogFormat: JSON
+Parameters:
+  Stage:
+    Type: String
+    Default: labs
+  DbLog:
+    Type: String
+    Default: "true"
+  Log:
+    Type: String
+    Default: DEBUG
+  RestApiPesaId:
+    Type: String
+  DaysLiveToReport:
+    Type: Number
+    Default: 15
+Resources:
+  PesaReporteBuket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub bucket-${Stage}-uvilor-pesa-reportes
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteReportsPdf
+            Status: Enabled
+            ExpirationInDays: !Ref DaysLiveToReport
+            Prefix: reports/pdf
+      VersioningConfiguration:
+        Status: Suspended
+
+  CreatePdfReportFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/pdf-report/handler.handler
+      FunctionName: !Sub ${AWS::StackName}-get-products
+      Runtime: nodejs22.x
+      Timeout: 10
+      Architectures:
+        - arm64
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - Statement:
+            - Effect: Allow
+              Action:
+                - lambda:InvokeFunction
+              Resource: 
+                - !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:pesas-lbd-peso-${Stage}-get-peso
+      Environment:
+        Variables:
+          STAGE: !Ref Stage
+          LOG: !Ref Log
+          BUCKET_PESAS_REPORT: !Ref PesaReporteBuket
+          LAMBDA_GET_PESOS: !Sub pesas-lbd-peso-${Stage}-get-peso
+  CreatePdfReportLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      RetentionInDays: 14
+      LogGroupName: !Sub /aws/lambda/${CreatePdfReportFunction}
+  CreatePdfReportResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref RestApiPesaId
+      ParentId: !ImportValue
+        Fn::Sub: ${Stage}RestApiPesaV1Reportes
+      PathPart: pdf
+  CreatePdfReportNameResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref RestApiPesaId
+      ParentId: !Ref CreatePdfReportResource
+      PathPart: '{nombre}'
+  CreatePdfReportNameMethodGET:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref RestApiPesaId
+      ResourceId: !Ref CreatePdfReportNameResource
+      HttpMethod: GET
+      AuthorizationType: CUSTOM
+      AuthorizerId: !ImportValue
+        Fn::Sub: ${Stage}RestApiPesaAuthorizerId
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreatePdfReportFunction.Arn}/invocations
+  CreatePdfReportNameMethodPOST:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref RestApiPesaId
+      ResourceId: !Ref CreatePdfReportNameResource
+      HttpMethod: POST
+      AuthorizationType: CUSTOM
+      AuthorizerId: !ImportValue
+        Fn::Sub: ${Stage}RestApiPesaAuthorizerId
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreatePdfReportFunction.Arn}/invocations
+  CreatePdfReportPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt CreatePdfReportFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApiPesaId}/*/*
+
+  RestApiDeploymentPesasLbdCatalogo:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: RootGetMethod
+    Properties:
+      RestApiId: !Ref RestApiPesaId
+      StageName: !Ref Stage
+    DependsOn:
+      - CreatePdfReportNameMethodGET
+      - CreatePdfReportNameMethodPOST

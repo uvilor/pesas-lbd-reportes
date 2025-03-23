@@ -1,0 +1,13 @@
+node_modules/
+.idea/
+coverage/
+package-lock.json
+dist/
+target/
+.vscode/
+.serverless/
+Makefile
+dist
+BD.sql
+.npmrc
+contratos.json
