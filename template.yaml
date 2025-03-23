@@ -33,7 +33,7 @@ Resources:
   CreatePdfReportFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: dist/pdf-report/handler.handler
+      Handler: dist/functions/pdf-report/handler.handler
       FunctionName: !Sub ${AWS::StackName}-get-products
       Runtime: nodejs22.x
       Timeout: 10

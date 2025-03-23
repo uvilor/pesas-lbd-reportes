@@ -20,15 +20,9 @@ jobs:
           if [[ "${GITHUB_REF_NAME}" == "master" ]]; then
             echo "stage=prod" >> $GITHUB_ENV
             echo "log=INFO" >> $GITHUB_ENV
-            echo "jwtSecret=${{ secrets.PROD_JWT_SECRET }}" >> $GITHUB_ENV
-            echo "dbName=${{ secrets.PROD_DB_NAME }}" >> $GITHUB_ENV
-            echo "SecretDbName=${{ secrets.PROD_DB_SECRET_NAME }}" >> $GITHUB_ENV
           else
             echo "stage=labs" >> $GITHUB_ENV
             echo "log=DEBUG" >> $GITHUB_ENV
-            echo "jwtSecret=${{ secrets.LABS_JWT_SECRET }}" >> $GITHUB_ENV
-            echo "dbName=${{ secrets.LABS_DB_NAME }}" >> $GITHUB_ENV
-            echo "SecretDbName=${{ secrets.LABS_DB_SECRET_NAME }}" >> $GITHUB_ENV
           fi
 
       - name: Create .npmrc
