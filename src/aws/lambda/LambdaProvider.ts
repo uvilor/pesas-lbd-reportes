@@ -9,6 +9,7 @@ export default class LambdaProvider extends Lambda {
         queryStringParameters.offset = '0'
         queryStringParameters.limit = '0'      
         const data = await this.invokeIncludeHeader(LAMBDA.GET_PESOS, {
+            httpMethod: "GET",
             headers,
             queryStringParameters,
             requestContext

@@ -33,10 +33,11 @@ export default class S3 {
             await client.send(new HeadObjectCommand(params));
             return true;
         } catch (error: any) {
-            if (error.name === "NotFound") {
-                return false;
+            if (error.name != "NotFound") {
+                console.log(error);
+                
             }
-            throw error;
+            return false;
         }
     }
 

@@ -30,7 +30,7 @@ export async function handler(event: ProxyRESTApiGatewayEvent, context: Context)
             else {
                 const pesos = await lambdaProvider.getPesos(event)
                 let labes: string[] = queryStringParameters.labes && JSON.parse(queryStringParameters.labes)
-                generalPdf(passThrough, PDF[name as keyof typeof PDF].TITLES, labes, pesos.data, 'Detalle de pesos')
+                generalPdf(passThrough, PDF[name.toUpperCase() as keyof typeof PDF].TITLES, labes, pesos.data, 'Detalle de pesos')
                 await uploadPromise
                 url = await s3.getPreSignedUrl(param)
             }
