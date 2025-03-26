@@ -1,6 +1,6 @@
 export const PDF_TABLES_GENERIC = {
     PESO: {
-        pesos_detallado: {
+        detallado: {
             TITLE: 'Pesos Detallado',
             TITLES: {
                 proveedor: { name: 'Proveedor' },
@@ -19,7 +19,7 @@ export const PDF_TABLES_GENERIC = {
                 fecha: { name: 'fecha' }
             }
         },
-        peso_proveedor: {
+        proveedor: {
             TITLE: 'Peso Proveedor',
             TITLES: {
                 proveedor: { name: 'Proveedor' },
@@ -35,7 +35,7 @@ export const PDF_TABLES_GENERIC = {
                 pago_subsidio: { name: 'Pago subsidio' }
             }
         },
-        peso_proveedor_fecha: {
+        proveedor_fecha: {
             TITLE: 'Peso Proveedor-Fecha',
             TITLES: {
                 proveedor: { name: 'Proveedor' },
@@ -52,7 +52,7 @@ export const PDF_TABLES_GENERIC = {
                 fecha: { name: 'fecha' },
             }
         },
-        peso_destino: {
+        destino: {
             TITLE: 'Peso Destino',
             TITLES: {
                 destino: { name: 'Destino' },
@@ -67,7 +67,7 @@ export const PDF_TABLES_GENERIC = {
                 pago_subsidio: { name: 'Pago subsidio' },
             }
         },
-        peso_destino_fecha: {
+        destino_fecha: {
             TITLE: 'Peso Destino-Fecha',
             TITLES: {
                 destino: { name: 'Destino' },
