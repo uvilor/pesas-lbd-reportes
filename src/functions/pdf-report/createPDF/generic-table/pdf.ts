@@ -37,7 +37,9 @@ export function generalPdf(passThrough: PassThrough, titles: titlesProps, header
                 else row[h] = ''
             });
             return row;
-        })
+        }),
+        padding: 5,
+        columnSpacing: 10
     };
     doc.table(json, {
         prepareHeader: () => doc.font("Helvetica-Bold").fontSize(12),
@@ -49,10 +51,9 @@ export function generalPdf(passThrough: PassThrough, titles: titlesProps, header
 function getPageSettings(numColumns: number): { size: string; layout: 'portrait' | 'landscape' } {
     if (numColumns <= 4) {
         return { size: 'A4', layout: 'portrait' }; // Para tablas pequeñas
-    } else if (numColumns <= 8) {
+    }
+    else if (numColumns <= 8) {
         return { size: 'A4', layout: 'landscape' }; // Para tablas medianas
-    } else if (numColumns <= 12) {
-        return { size: 'legal', layout: 'portrait' }; // Para tablas grandes
     }
     return { size: 'legal', layout: 'landscape' }; // Personalizado
 }
