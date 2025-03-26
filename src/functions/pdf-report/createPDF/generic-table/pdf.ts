@@ -1,5 +1,5 @@
 import PDFDocumentWithTables from "pdfkit-table";
-import { RowProps } from "../../../aws/lambda/type";
+import { RowProps } from "../../../../aws/lambda/type";
 import { PassThrough } from 'node:stream';
 
 
