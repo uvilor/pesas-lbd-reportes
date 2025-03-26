@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Generar reportes para aplicacion de pesas",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "build": "npm run clean && ./node_modules/typescript/bin/tsc",
     "clean": "rm -rf dist"
