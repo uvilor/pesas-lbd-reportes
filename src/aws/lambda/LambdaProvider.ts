@@ -12,6 +12,6 @@ export default class LambdaProvider extends Lambda {
             queryStringParameters,
             requestContext: { authorizer }
         })
-        return data as PesosRp
+        return JSON.parse(data.body) as PesosRp
     }
 }
