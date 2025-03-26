@@ -20,12 +20,13 @@ export function getValue(objeto: RowProps, texto: string): RowPropsValue {
 type titlesProps = Record<string, { name: string }>
 
 export function generalPdf(passThrough: PassThrough, titles: titlesProps, headers: string[] | undefined, data: RowProps[], titulo: string) {
-    const doc = new PDFDocumentWithTables()
+    if (!headers) headers = Object.keys(titles)
+    const optionsPdf = getPageSettings(headers.length)
+    const doc = new PDFDocumentWithTables(optionsPdf)
     doc.compress = true
     doc.pipe(passThrough)
     doc.fontSize(20).text(titulo, { align: 'center' });
     doc.moveDown();
-    if (!headers) headers = Object.keys(titles)
     const json = {
         headers: headers.map(key => ({ label: titles[key].name, property: key })),
         datas: data.map(visita => {
@@ -43,4 +44,15 @@ export function generalPdf(passThrough: PassThrough, titles: titlesProps, header
         prepareRow: () => doc.font("Helvetica").fontSize(12),
     });
     doc.end()
+}
+
+function getPageSettings(numColumns: number): { size: string; layout: 'portrait' | 'landscape' } {
+    if (numColumns <= 4) {
+        return { size: 'A4', layout: 'portrait' }; // Para tablas pequeñas
+    } else if (numColumns <= 8) {
+        return { size: 'A4', layout: 'landscape' }; // Para tablas medianas
+    } else if (numColumns <= 12) {
+        return { size: 'legal', layout: 'portrait' }; // Para tablas grandes
+    }
+    return { size: 'legal', layout: 'landscape' }; // Personalizado
 }

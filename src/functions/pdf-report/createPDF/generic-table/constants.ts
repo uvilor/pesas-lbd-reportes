@@ -1,7 +1,7 @@
 export const PDF_TABLES_GENERIC = {
     PESO: {
         detallado: {
-            TITLE: 'Pesos Detallado',
+            TITLE: 'Pesos detallado',
             TITLES: {
                 proveedor: { name: 'Proveedor' },
                 documento_proveedor: { name: 'Documento proveedor' },
@@ -20,7 +20,7 @@ export const PDF_TABLES_GENERIC = {
             }
         },
         proveedor: {
-            TITLE: 'Peso Proveedor',
+            TITLE: 'Peso por proveedor',
             TITLES: {
                 proveedor: { name: 'Proveedor' },
                 documento_proveedor: { name: 'Documento proveedor' },
@@ -36,7 +36,7 @@ export const PDF_TABLES_GENERIC = {
             }
         },
         proveedor_fecha: {
-            TITLE: 'Peso Proveedor-Fecha',
+            TITLE: 'Peso por proveedor y fecha',
             TITLES: {
                 proveedor: { name: 'Proveedor' },
                 documento_proveedor: { name: 'Documento proveedor' },
@@ -53,7 +53,7 @@ export const PDF_TABLES_GENERIC = {
             }
         },
         destino: {
-            TITLE: 'Peso Destino',
+            TITLE: 'Peso por destino',
             TITLES: {
                 destino: { name: 'Destino' },
                 producto: { name: 'Producto' },
@@ -68,7 +68,7 @@ export const PDF_TABLES_GENERIC = {
             }
         },
         destino_fecha: {
-            TITLE: 'Peso Destino-Fecha',
+            TITLE: 'Peso por destino y fecha',
             TITLES: {
                 destino: { name: 'Destino' },
                 producto: { name: 'Producto' },
