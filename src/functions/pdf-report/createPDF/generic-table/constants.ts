@@ -82,7 +82,35 @@ export const PDF_TABLES_GENERIC = {
                 pago_subsidio: { name: 'Pago subsidio' },
                 fecha: { name: 'fecha' },
             }
+        },
+        producto: {
+            TITLE: 'Peso por productos',
+            TITLES: {
+                producto: { name: 'Producto' },
+                entrada: { name: 'Peso de entrada' },
+                salida: { name: 'Peso de salida' },
+                total: { name: 'Peso total' },
+                total_format: { name: 'Total en unidad' },
+                precio: { name: 'Precio unitario' },
+                pago: { name: 'Pago' },
+                subsidio: { name: 'Subsidio' },
+                pago_subsidio: { name: 'Pago subsidio' }
+            }
+        },
+        producto_fecha: {
+            TITLE: 'Peso por productos y fecha',
+            TITLES: {
+                producto: { name: 'Producto' },
+                entrada: { name: 'Peso de entrada' },
+                salida: { name: 'Peso de salida' },
+                total: { name: 'Peso total' },
+                total_format: { name: 'Total en unidad' },
+                precio: { name: 'Precio unitario' },
+                pago: { name: 'Pago' },
+                subsidio: { name: 'Subsidio' },
+                pago_subsidio: { name: 'Pago subsidio' },
+                fecha: { name: 'fecha' }
+            }
         }
     }
-
 }
