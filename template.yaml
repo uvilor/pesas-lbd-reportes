@@ -112,28 +112,28 @@ Resources:
         IntegrationHttpMethod: POST
         Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreatePdfReportFunction.Arn}/invocations
   CreatePdfReportNameMethodOPTIONS:
-  Type: AWS::ApiGateway::Method
-  Properties:
-    RestApiId: !Ref RestApiPesaId
-    ResourceId: !Ref CreatePdfReportNameResource
-    HttpMethod: OPTIONS
-    AuthorizationType: NONE
-    Integration:
-      Type: MOCK
-      RequestTemplates:
-        application/json: '{ "statusCode": 200 }'
-      IntegrationResponses:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref RestApiPesaId
+      ResourceId: !Ref CreatePdfReportNameResource
+      HttpMethod: OPTIONS
+      AuthorizationType: NONE
+      Integration:
+        Type: MOCK
+        RequestTemplates:
+          application/json: '{ "statusCode": 200 }'
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+      MethodResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
-            method.response.header.Access-Control-Allow-Origin: "'*'"
-            method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
-    MethodResponses:
-      - StatusCode: 200
-        ResponseParameters:
-          method.response.header.Access-Control-Allow-Headers: true
-          method.response.header.Access-Control-Allow-Origin: true
-          method.response.header.Access-Control-Allow-Methods: true
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
   CreatePdfReportPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -152,3 +152,4 @@ Resources:
     DependsOn:
       - CreatePdfReportNameMethodGET
       - CreatePdfReportNameMethodPOST
+      - CreatePdfReportNameMethodOPTIONS
