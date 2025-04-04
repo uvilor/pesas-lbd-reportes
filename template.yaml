@@ -16,6 +16,9 @@ Parameters:
   DaysLiveToReport:
     Type: Number
     Default: 15
+  CorsOrigin:
+    Type: String
+    Default: https://pesalabs.uvilorapps.com, https://pesa.uvilorapps.com
 Resources:
   PesaReporteBuket:
     Type: AWS::S3::Bucket
@@ -63,6 +66,7 @@ Resources:
           LOG: !Ref Log
           BUCKET_PESAS_REPORT: !Ref PesaReporteBuket
           LAMBDA_GET_PESOS: !Sub pesas-lbd-peso-${Stage}-get-peso
+          CORS_ORIGIN: !Ref CorsOrigin
   CreatePdfReportLogGroup:
     Type: AWS::Logs::LogGroup
     Properties: 

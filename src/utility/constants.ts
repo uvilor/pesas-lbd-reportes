@@ -13,3 +13,5 @@ export const BUCKET = {
     PESAS_REPORT: process.env.BUCKET_PESAS_REPORT,
     DESTINATION_FOLDER: 'pdf/'
 }
+
+export const CORS_ORIGIN = process.env.CORS_ORIGIN || '*'
