@@ -20,22 +20,23 @@ export async function handler(event: ProxyRESTApiGatewayEvent, context: Context)
         Key: BUCKET.DESTINATION_FOLDER.concat(authorizer.ctid, '/', fileName, '.pdf')
     }
     const s3 = new S3()
-    const isExist = await s3.checkIfFileExists(param)
-    if (isExist) url = await s3.getPreSignedUrl(param)
-    else {
-        const { passThrough, uploadPromise } = s3.createStreamUpload(param.Bucket, param.Key, 'application/pdf')
-        switch (nombre) {
-            case PDF.PESOS.NAME:
+
+    const { passThrough, uploadPromise } = s3.createStreamUpload(param.Bucket, param.Key, 'application/pdf')
+    switch (nombre) {
+        case PDF.PESOS.NAME:
+            const date = new Date().toISOString()
+            if (!date.includes(queryStringParameters.fechaFin)) url = await s3.getPreSignedUrlIfExists(param)
+            if (!url) {
                 const pesos = await lambdaProvider.getPesos(authorizer, queryStringParameters, headers)
                 let labes: string[] = queryStringParameters.labes && JSON.parse(queryStringParameters.labes)
                 const reporte = queryStringParameters.reporte as keyof typeof PDF_TABLES_GENERIC.PESO
                 generalPdf(passThrough, PDF_TABLES_GENERIC.PESO[reporte].TITLES, labes, pesos.data, PDF_TABLES_GENERIC.PESO[reporte].TITLE)
                 await uploadPromise
                 url = await s3.getPreSignedUrl(param)
-                break;
-            default:
-                break;
-        }
+            }
+            break;
+        default:
+            break;
     }
     const origin = (event.headers.origin || '').includes('.uvilorapps.com') ? event.headers.origin : ''
     return getResponse(

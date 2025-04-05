@@ -20,9 +20,11 @@ jobs:
           if [[ "${GITHUB_REF_NAME}" == "master" ]]; then
             echo "stage=prod" >> $GITHUB_ENV
             echo "log=INFO" >> $GITHUB_ENV
+            echo "CorsOrigin=https://pesas.uvilorapps.com" >> $GITHUB_ENV
           else
             echo "stage=labs" >> $GITHUB_ENV
             echo "log=DEBUG" >> $GITHUB_ENV
+            echo "CorsOrigin=https://pesalabs.uvilorapps.com" >> $GITHUB_ENV
           fi
 
       - name: Create .npmrc
@@ -66,4 +68,5 @@ jobs:
             --parameter-overrides \
               Stage=${{ env.stage }} \
               Log="${{ env.log }}" \
+              CorsOrigin="${{ env.CorsOrigin }}" \
               RestApiPesaId="${{ env.RestApiPesaId }}"
