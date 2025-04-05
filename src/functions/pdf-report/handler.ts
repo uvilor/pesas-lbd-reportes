@@ -40,7 +40,7 @@ export async function handler(event: ProxyRESTApiGatewayEvent, context: Context)
     const origin = (event.headers.origin || '').includes('.uvilorapps.com') ? event.headers.origin : ''
     return getResponse(
         { message: 'URL generada con éxito', url },
-        { setCookie: authorizer.setCookies, origin }
+        { setCookies: authorizer.setCookies, origin }
     )
 
 }
