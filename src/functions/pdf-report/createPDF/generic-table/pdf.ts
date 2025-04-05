@@ -29,7 +29,7 @@ export function generalPdf(passThrough: PassThrough, titles: titlesProps, header
     doc.moveDown();
     const json = {
         headers: headers.map(key => ({ label: titles[key].name, property: key })),
-        datas: data.map(visita => {
+        datas: data?.map(visita => {
             const row: Record<string, string> = {}
             headers.forEach(h => {
                 const valor = getValue(visita, h)
