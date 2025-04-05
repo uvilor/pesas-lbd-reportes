@@ -6,8 +6,6 @@ import { createHash } from "node:crypto"
 import { generalPdf } from "./createPDF/generic-table/pdf";
 import { PDF_TABLES_GENERIC } from "./createPDF/generic-table/constants";
 import { getResponse } from "../../utility/utils";
-console.log(createHash('sha256').update(JSON.stringify({ hola: 1 })));
-
 export async function handler(event: ProxyRESTApiGatewayEvent, context: Context) {
     const { nombre } = event.pathParameters
     let url;
