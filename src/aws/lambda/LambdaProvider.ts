@@ -9,7 +9,7 @@ export default class LambdaProvider extends Lambda {
         const data = await this.invokeIncludeHeader(LAMBDA.GET_PESOS, {
             httpMethod: "GET",
             headers: {
-                Cookies: headers.Cookie || headers.cookie
+                Cookie: headers.Cookie || headers.cookie
             },
             queryStringParameters,
             requestContext: { authorizer }
