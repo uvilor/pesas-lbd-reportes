@@ -35,7 +35,7 @@ export default class S3 {
         } catch (error: any) {
             if (error.name != "NotFound") {
                 console.log(error);
-                
+
             }
             return false;
         }
@@ -43,6 +43,12 @@ export default class S3 {
 
     async getPreSignedUrl(param: GetObjectCommandInput, expiresIn = 3600) {
         return getSignedUrl(client, new GetObjectCommand(param), { expiresIn })
+    }
+
+    async getPreSignedUrlIfExists(params: HeadObjectCommandInput, expiresIn = 3600) {
+        const isExist = await this.checkIfFileExists(params)
+        if (isExist) return await this.getPreSignedUrl(params, expiresIn)
+        return null;
     }
 
 }

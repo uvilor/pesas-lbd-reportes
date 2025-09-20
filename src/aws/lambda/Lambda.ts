@@ -18,7 +18,7 @@ export default class Lambda {
 
     async invokeIncludeHeader(FunctionName: string, Payload = {} as { [k: string]: any }, invocationType = InvocationType.RequestResponse) {
         const defaultHeaders = {
-            'X-Forwarded-For': 'cce-transfer-setup',
+            'X-Forwarded-For': 'pesas-ldb-reportes',
             'Content-Type': 'application/json',
             'User-Agent': 'Lambda Call',
             ...(Payload?.headers || {})
